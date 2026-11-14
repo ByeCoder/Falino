@@ -63,7 +63,7 @@ No real Telegram credentials, translation-service key or production server were 
 - actual channel/group permissions and support reply routing on a Telegram account;
 - premium/custom-emoji eligibility and rendering;
 - model-provider translation quality;
-- Docker image build, systemd installation and production capacity
+- systemd installation and production capacity
 
 remain to be checked after configuration. Docker is not installed in the build workspace. No token, API hash, user database or session file is included in the archive.
 
@@ -94,3 +94,15 @@ remain to be checked after configuration. Docker is not installed in the build w
   then verified by successfully publishing the MIT license on 2026-11-14.
 - GitHub CI results are available in the repository Actions tab. Live Telegram
   deployment still requires the owner's credentials and server configuration.
+
+## GitHub CI — 2026-11-14
+
+Verified on commit `039006f0fb9ed1ad8c0b48d9f90b0b5481516dc1`:
+
+- Python 3.12: dependency installation, Ruff, compilation and all 72 tests passed.
+- Docker: image build passed; the built image imported the application and
+  resolved `Asia/Tehran` successfully with network access disabled.
+- All 47 published files match the prepared local Git tree.
+- Evidence: https://github.com/ByeCoder/Falino/actions/runs/43556746707
+
+These checks do not sign in to Telegram or deploy a live bot.
