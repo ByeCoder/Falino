@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    name: Python 3.12 checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Lint
+        run: ruff check astrobot tests backup.py smoke_api.py benchmark.py
+      - name: Compile application
+        run: python -m compileall -q astrobot
+      - name: Run tests without Telegram credentials
+        run: python -m pytest -q
+
+  docker:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build the image without production secrets
+        run: docker build --tag falino:ci .
+      - name: Verify imports and timezone data in the built image
+        run: docker run --rm --network none falino:ci python -c "from zoneinfo import ZoneInfo; import astrobot.app; print(ZoneInfo('Asia/Tehran'))"

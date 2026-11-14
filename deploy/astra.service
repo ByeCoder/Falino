@@ -1,0 +1,25 @@
+[Unit]
+Description=Astra Telethon horoscope bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=astra
+WorkingDirectory=/opt/astra_bot
+ExecStart=/opt/astra_bot/.venv/bin/python -m astrobot
+EnvironmentFile=/opt/astra_bot/.env
+Environment=DATA_DIR=/var/lib/astra
+StateDirectory=astra
+StateDirectoryMode=0700
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

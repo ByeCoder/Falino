@@ -1,0 +1,32 @@
+name: Bug report
+description: Report a reproducible Falino problem
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: Please remove tokens, API hashes, sessions, user data and private message contents before posting.
+  - type: input
+    id: version
+    attributes:
+      label: Falino revision, Python version and operating system
+      placeholder: v2.0.1, Python 3.12.x, Ubuntu
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Use synthetic users and channels where possible.
+    validations:
+      required: true
+  - type: textarea
+    id: behaviour
+    attributes:
+      label: Expected and actual behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Redacted error output
+      render: text
